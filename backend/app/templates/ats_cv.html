@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cv.contact.full_name }} - Tailored CV</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm 16mm 18mm 16mm;
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.45;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 20pt;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 2px 0;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .headline {
+            font-size: 11pt;
+            font-weight: 600;
+            text-align: center;
+            color: #2563eb;
+            margin: 0 0 8px 0;
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 9pt;
+            color: #475569;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1.5px solid #cbd5e1;
+        }
+        .contact-info span {
+            margin: 0 5px;
+        }
+        .section-title {
+            font-size: 11pt;
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #94a3b8;
+        }
+        .summary-text {
+            font-size: 9.5pt;
+            color: #334155;
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+        .item-header {
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+        .item-title {
+            font-weight: 700;
+            font-size: 10pt;
+            color: #0f172a;
+            float: left;
+        }
+        .item-date {
+            font-weight: 600;
+            font-size: 9pt;
+            color: #475569;
+            float: right;
+            text-align: right;
+        }
+        .clear {
+            clear: both;
+        }
+        .item-subtitle {
+            font-style: italic;
+            font-size: 9.5pt;
+            color: #334155;
+            margin-bottom: 4px;
+        }
+        ul {
+            margin: 3px 0 8px 0;
+            padding-left: 18px;
+        }
+        li {
+            margin-bottom: 3px;
+            font-size: 9.5pt;
+            color: #1e293b;
+        }
+        .skills-grid {
+            margin-top: 4px;
+        }
+        .skill-group {
+            margin-bottom: 4px;
+            font-size: 9.5pt;
+        }
+        .skill-category {
+            font-weight: 700;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Contact Info -->
+    <h1>{{ cv.contact.full_name }}</h1>
+    {% if cv.contact.headline %}
+    <div class="headline">{{ cv.contact.headline }}</div>
+    {% endif %}
+    
+    <div class="contact-info">
+        {% if cv.contact.location %}<span>{{ cv.contact.location }}</span> •{% endif %}
+        {% if cv.contact.phone %}<span>{{ cv.contact.phone }}</span> •{% endif %}
+        {% if cv.contact.email %}<span>{{ cv.contact.email }}</span>{% endif %}
+        {% if cv.contact.linkedin %}<br><span>{{ cv.contact.linkedin }}</span>{% endif %}
+        {% if cv.contact.github %} • <span>{{ cv.contact.github }}</span>{% endif %}
+        {% if cv.contact.website %} • <span>{{ cv.contact.website }}</span>{% endif %}
+    </div>
+
+    <!-- Summary -->
+    {% if cv.summary %}
+    <div class="section-title">Professional Summary</div>
+    <div class="summary-text">{{ cv.summary }}</div>
+    {% endif %}
+
+    <!-- Work Experience -->
+    {% if cv.work_experience %}
+    <div class="section-title">Professional Experience</div>
+    {% for work in cv.work_experience %}
+    <div class="item-header">
+        <div class="item-title">{{ work.position }} — <strong>{{ work.company }}</strong></div>
+        <div class="item-date">{{ work.start_date }} – {{ work.end_date }}</div>
+        <div class="clear"></div>
+    </div>
+    {% if work.location %}
+    <div class="item-subtitle">{{ work.location }}</div>
+    {% endif %}
+    {% if work.highlights %}
+    <ul>
+        {% for highlight in work.highlights %}
+        <li>{{ highlight }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- Skills -->
+    {% if cv.skills %}
+    <div class="section-title">Skills & Core Competencies</div>
+    <div class="skills-grid">
+        {% for group in cv.skills %}
+        <div class="skill-group">
+            <span class="skill-category">{{ group.category }}:</span> {{ group.skills | join(', ') }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Projects -->
+    {% if cv.projects %}
+    <div class="section-title">Projects</div>
+    {% for proj in cv.projects %}
+    <div class="item-header">
+        <div class="item-title">{{ proj.name }} {% if proj.link %}<span style="font-weight:normal; font-size:8.5pt;">({{ proj.link }})</span>{% endif %}</div>
+        <div class="clear"></div>
+    </div>
+    {% if proj.technologies %}
+    <div class="item-subtitle">Tech Stack: {{ proj.technologies | join(', ') }}</div>
+    {% endif %}
+    {% if proj.description %}
+    <ul>
+        {% for bullet in proj.description %}
+        <li>{{ bullet }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- Education -->
+    {% if cv.education %}
+    <div class="section-title">Education</div>
+    {% for edu in cv.education %}
+    <div class="item-header">
+        <div class="item-title">{{ edu.degree }} — <strong>{{ edu.institution }}</strong></div>
+        {% if edu.graduation_date %}
+        <div class="item-date">{{ edu.graduation_date }}</div>
+        {% endif %}
+        <div class="clear"></div>
+    </div>
+    {% if edu.details %}
+    <ul>
+        {% for detail in edu.details %}
+        <li>{{ detail }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+    <!-- Certifications -->
+    {% if cv.certifications %}
+    <div class="section-title">Certifications</div>
+    <ul>
+        {% for cert in cv.certifications %}
+        <li><strong>{{ cert.name }}</strong> — {{ cert.issuer }} {% if cert.date %}({{ cert.date }}){% endif %}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+</body>
+</html>
