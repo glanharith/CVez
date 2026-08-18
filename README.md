@@ -1,6 +1,6 @@
 # CVez — Automated AI CV Tailoring Application
 
-> **CVez** is a locally hosted application designed to automatically extract resume data from uploaded PDFs/DOCX files, tailor bullet points and keywords against a target job description using AI (Google Gemini / OpenAI / Anthropic), and generate clean, ATS-compliant PDF resumes.
+> **CVez** is an application designed to automatically extract resume data from uploaded PDFs/DOCX files, tailor bullet points and keywords against a target job description using AI (Google Gemini / OpenAI / Anthropic), and generate clean, ATS-compliant PDF resumes.
 
 ---
 
